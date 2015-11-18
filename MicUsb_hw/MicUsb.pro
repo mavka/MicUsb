@@ -1,4 +1,4 @@
-update=18.11.2015 19:02:40
+update=18.11.2015 23:02:14
 version=1
 last_client=kicad
 [cvpcb]
@@ -46,3 +46,5 @@ LibName5=Tittar_kl
 LibName6=st_kl
 LibName7=Transistors_kl
 LibName8=D:/Libs/Kicad/ESDProtection
+LibName9=D:/Libs/Kicad/Audio_kl
+LibName10=D:/Libs/Kicad/adc_kl
