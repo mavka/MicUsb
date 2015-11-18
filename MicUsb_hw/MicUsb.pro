@@ -1,4 +1,4 @@
-update=13.11.2015 2:42:02
+update=18.11.2015 19:02:40
 version=1
 last_client=kicad
 [cvpcb]
@@ -6,22 +6,6 @@ version=1
 NetIExt=net
 [cvpcb/libraries]
 EquName1=devcms
-[eeschema]
-version=1
-LibDir=D:/Libs/Kicad
-NetFmtName=
-RptD_X=0
-RptD_Y=100
-RptLab=1
-LabSize=60
-[eeschema/libraries]
-LibName1=Connectors_kl
-LibName2=pcb_details
-LibName3=power
-LibName4=Power_kl
-LibName5=Tittar_kl
-LibName6=st_kl
-LibName7=Transistors_kl
 [pcbnew]
 version=1
 LastNetListRead=
@@ -50,3 +34,15 @@ LibName5=Sensors
 LibDir=D:/libs/Kicad
 [general]
 version=1
+[eeschema]
+version=1
+LibDir=D:/Libs/Kicad
+[eeschema/libraries]
+LibName1=Connectors_kl
+LibName2=pcb_details
+LibName3=power
+LibName4=Power_kl
+LibName5=Tittar_kl
+LibName6=st_kl
+LibName7=Transistors_kl
+LibName8=D:/Libs/Kicad/ESDProtection
