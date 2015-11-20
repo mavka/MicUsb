@@ -1,6 +1,6 @@
-update=19/11/2015 13:57:22
+update=20.11.2015 21:16:56
 version=1
-last_client=eeschema
+last_client=kicad
 [cvpcb]
 version=1
 NetIExt=net
@@ -38,14 +38,13 @@ version=1
 version=1
 LibDir=D:/Libs/Kicad
 [eeschema/libraries]
-LibName1=MicUsb-rescue
-LibName2=Connectors_kl
-LibName3=pcb_details
-LibName4=power
-LibName5=Power_kl
-LibName6=Tittar_kl
-LibName7=st_kl
-LibName8=Transistors_kl
-LibName9=Audio_kl
-LibName10=adc_kl
-LibName11=ESDProtection
+LibName1=Connectors_kl
+LibName2=pcb_details
+LibName3=power
+LibName4=Power_kl
+LibName5=Tittar_kl
+LibName6=st_kl
+LibName7=Transistors_kl
+LibName8=Audio_kl
+LibName9=adc_kl
+LibName10=ESDProtection

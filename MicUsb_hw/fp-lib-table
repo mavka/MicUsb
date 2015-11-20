@@ -5,4 +5,6 @@
   (lib (name SOT)(type KiCad)(uri D:\Libs\Kicad\SOT.pretty)(options "")(descr ""))
   (lib (name Inductors)(type KiCad)(uri D:\Libs\Kicad\Inductors.pretty)(options "")(descr ""))
   (lib (name Quartz)(type KiCad)(uri D:\Libs\Kicad\Quartz.pretty)(options "")(descr ""))
+  (lib (name LQFP_TQFP)(type KiCad)(uri D:\Libs\Kicad\LQFP_TQFP.pretty)(options "")(descr ""))
+  (lib (name BtnsSwitches)(type KiCad)(uri D:\Libs\Kicad\BtnsSwitches.pretty)(options "")(descr ""))
 )
