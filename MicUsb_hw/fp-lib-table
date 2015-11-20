@@ -1,0 +1,8 @@
+(fp_lib_table
+  (lib (name LEDs)(type KiCad)(uri D:\Libs\Kicad\LEDs.pretty)(options "")(descr ""))
+  (lib (name QFN_DFN)(type KiCad)(uri D:\Libs\Kicad\QFN_DFN.pretty)(options "")(descr ""))
+  (lib (name SO_DIL_TSSOP)(type KiCad)(uri D:\Libs\Kicad\SO_DIL_TSSOP.pretty)(options "")(descr ""))
+  (lib (name SOT)(type KiCad)(uri D:\Libs\Kicad\SOT.pretty)(options "")(descr ""))
+  (lib (name Inductors)(type KiCad)(uri D:\Libs\Kicad\Inductors.pretty)(options "")(descr ""))
+  (lib (name Quartz)(type KiCad)(uri D:\Libs\Kicad\Quartz.pretty)(options "")(descr ""))
+)
