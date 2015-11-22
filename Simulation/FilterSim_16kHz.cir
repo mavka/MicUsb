@@ -2,8 +2,8 @@
 FileType=CIR
 Version=9.00
 Program=Micro-Cap
-Screen=1920,1080
-MCAPVersion=9.0.6.1
+Screen=1850,1126
+MCAPVersion=9.0.7.0
 Key ID=2 233 293 684
 NLCnt=110
 TXCnt=12
@@ -165,7 +165,7 @@ Pin="5",a,4,7,6,0
 Pin="6",a,9,3,-3,-3
 
 [Circuit]
-Window Placement=2,3, -1,-1, -8,-31, 0,0,1425,641
+Window Placement=2,3, -1,-1, -8,-30, 50,50,1391,724
 Default Object=Color=#000080
 Default Object Font=Height=-15,FStyle=0,Color=#000080,Name=Arial
 Default Object Apply Border To Text=No
@@ -197,8 +197,6 @@ Digital F Color=#FFFF00
 Digital 1 Color=#FF0000
 Digital X Color=#C0C0C0
 Digital Z Color=#808080
-Window Placement in Transient Analysis=2,3, -1,-1, -8,-31, 78,78,1703,704
-Window Placement in AC Analysis=0,1, -1,-1, -8,-31, 953,0,1906,908
 SpiceType=AMBIGUOUS
 Block Select Color=#51F998
 TitleBlock Field_1=$name
@@ -962,7 +960,7 @@ FONT=Yes
 
 [Section]
 Index=0
-Name="FilterSim"
+Name="FilterSim_16kHz"
 Type=Main
 Enable=True
 CurrentPage 0=0
@@ -983,9 +981,9 @@ Name=Main
 Scale 0=1
 Scale 1=1
 Scale 2=1
-SB 3=530,0
+SB 3=3,0
 Scale 3=1
-Grid=101,35
+Grid=147,61
 
 [Page]
 Index=1
@@ -1026,13 +1024,10 @@ Page=2
 Font=Height=-15,FStyle=0,Color=#000000,Name=Courier New
 Comment Color=#008000
 Background Color=#FFFFFF
-Len=120
-*** From file D:\Installations\Microcap\library\UTILITY.LBR
-*** 10MHz Sinusoidal Source
-.MODEL GENERAL SIN (A=3v F=1k)
+Len=0
+
 
 [Transient]
-Window Placement=2,3, -1,-1, -8,-31, 78,78,1703,704
 Font=Height=-15,FStyle=0,Color=#0000FF,Name=Arial
 WinBackGround Color=#FFFFFF
 Select Color=#FF0000
@@ -1080,13 +1075,6 @@ FFT_IncludeDCHarmonic=False
 FFT_AutoScale_Harmonics="10"
 PrinterAutoTile=No
 PrinterBlackBorder=No
-MonMaxShow=3
-MonPageWidth=66
-MonPlotWidth=21
-MonExprXWidth=142
-MonExprYWidth=260
-MonRangeXWidth=90
-MonRangeYWidth=90
 AnimateWait=0
 AnimateWaitTime=500
 Save_For_Future=No
@@ -1174,12 +1162,7 @@ COLOR=Yes
 FONT=Yes
 SELNEXT=No
 
-[APage]
-Analysis=Transient
-Name="Main"
-
 [AC]
-Window Placement=0,1, -1,-1, -8,-31, 0,0,953,908
 Font=Height=-15,FStyle=0,Color=#0000FF,Name=Arial
 WinBackGround Color=#FFFFFF
 Select Color=#FF0000
@@ -1227,13 +1210,6 @@ FFT_IncludeDCHarmonic=False
 FFT_AutoScale_Harmonics="10"
 PrinterAutoTile=No
 PrinterBlackBorder=No
-MonMaxShow=4
-MonPageWidth=66
-MonPlotWidth=21
-MonExprXWidth=142
-MonExprYWidth=260
-MonRangeXWidth=90
-MonRangeYWidth=90
 AnimateWait=0
 AnimateWaitTime=500
 Save_For_Future=No

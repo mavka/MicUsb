@@ -2,3 +2,11 @@
 MicUsb_hw/MicUsb.bak
 
 MicUsb_hw/MicUsb.xml
+
+Simulation/FilterSim_16kHz.ANO
+
+Simulation/FilterSim_16kHz.bak_cir
+
+Simulation/FilterSim.ANO
+
+Simulation/FilterSim.bak_cir
