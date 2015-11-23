@@ -1,4 +1,4 @@
-update=20.11.2015 21:16:56
+update=23.11.2015 16:43:50
 version=1
 last_client=kicad
 [cvpcb]
@@ -48,3 +48,4 @@ LibName7=Transistors_kl
 LibName8=Audio_kl
 LibName9=adc_kl
 LibName10=ESDProtection
+LibName11=D:/Libs/Kicad/OpAmp_kl
