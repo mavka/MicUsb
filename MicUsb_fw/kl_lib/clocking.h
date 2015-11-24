@@ -69,6 +69,7 @@ public:
     uint32_t AHBFreqHz;     // HCLK: AHB Bus, Core, Memory, DMA; 32 MHz max
     uint32_t APB1FreqHz;    // PCLK1: APB1 Bus clock; 32 MHz max
     uint32_t APB2FreqHz;    // PCLK2: APB2 Bus clock; 32 MHz max
+    uint8_t Timer9ClkMulti = 1;
     // SysClk switching
     uint8_t SwitchToHSI();
     uint8_t SwitchToHSE();
