@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xsi:noNamespaceSchemaLocation="Project.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Version current="1"/>
+	<Format>Project</Format>
+	<Header>
+		<Program name="TopoR" version="6.0"/>
+		<GUID>{46D74C88-0298-485F-87DE-10B1C9CC5062}</GUID>
+		<Annotation>Project file</Annotation>
+	</Header>
+	<Document>
+		<LocalLibrary />
+		<Pcb>
+			<File path=".\MicUsb.fsx" Folder="-1" isopened="1"/>
+		</Pcb>
+		<Import>
+			<Specctra>
+			<Path name="Z:\git\MicUsb\MicUsb_hw\MicUsb.dsn"/>
+			</Specctra>
+		</Import>
+		<ARouteSessions>
+		</ARouteSessions>
+	</Document>
+</Project>

@@ -1,0 +1,244 @@
+(session Z:\git\MicUsb\MicUsb_hw\TopoR\MicUsb\MicUsb.ses
+   (placement 
+      (resolution mm 100000)
+      (component "Capacitors:CAP_0603"
+         (place "C1" 11620000 -9555000 front 180)
+         (place "C2" 11530000 -8645000 front 180)
+         (place "C3" 11780000 -8735000 front 90)
+         (place "C4" 11960000 -8735000 front 90)
+         (place "C5" 16175000 -10205000 front 0)
+         (place "C6" 15495000 -10460000 front 0)
+         (place "C7" 15130000 -9775000 front 180)
+         (place "C8" 14990000 -10035000 front 180)
+         (place "C9" 10370000 -10675000 front 270)
+         (place "C10" 10380000 -11535000 front 90)
+         (place "C11" 14990000 -10265000 front 180)
+         (place "C12" 11100000 -10675000 front 270)
+         (place "C13" 11100000 -11525000 front 270)
+         (place "C15" 12440000 -8405000 front 90)
+         (place "C16" 12185000 -9555000 front 180)
+         (place "C17" 13345000 -9795000 front 0)
+         (place "C18" 12055900 -11743700 front 90)
+         (place "C19" 13555000 -9535000 front 270)
+         (place "C20" 13750000 -8670000 front 90)
+         (place "C21" 13570000 -8670000 front 90)
+         (place "C22" 12225900 -10908700 front 270)
+         (place "C23" 12050900 -10908700 front 270)
+         (place "C24" 14245000 -8800000 front 0)
+         (place "C25" 14265000 -9640000 front 180)
+         (place "C26" 14500000 -11910000 front 0)
+         (place "C27" 14505000 -11495000 front 0)
+         (place "C28" 14500000 -10805000 front 0)
+         (place "C29" 14500000 -10990000 front 0)
+         (place "C30" 13280000 -10795000 front 90)
+         (place "C31" 13010000 -11060000 front 180)
+         (place "C32" 13015000 -11865000 front 180)
+         (place "C33" 13135000 -11585000 front 90)
+      )
+      (component "Capacitors:CAP_0805"
+         (place "C14" 12235000 -8370000 front 90)
+      )
+      (component "QFN_DFN:DFN14"
+         (place "D1" 15550000 -10115000 front 270)
+      )
+      (component "SOT:SOT23-5"
+         (place "DA1" 10760000 -10675000 front 270)
+         (place "DA2" 10760000 -11535000 front 270)
+      )
+      (component "SO_DIL_TSSOP:MSOP8"
+         (place "DA3" 12410900 -11438700 front 0)
+      )
+      (component "SO_DIL_TSSOP:SO14"
+         (place "DA4" 13755000 -11355000 front 90)
+      )
+      (component "LQFP_TQFP:LQFP48"
+         (place "DD1" 12870000 -9095000 front 180)
+      )
+      (component "Resistors:RES_0603_SOLDERFUSE"
+         (place "F1" 10740000 -11115000 front 0)
+         (place "F2" 15825000 -10515000 front 90)
+         (place "F3" 12830000 -10000000 front 270)
+         (place "F4" 12830000 -10365000 front 270)
+         (place "F5" 12510000 -10195000 front 180)
+         (place "F6" 15960000 -11140000 front 0)
+      )
+      (component "Inductors:IND_0402"
+         (place "L1" 11560000 -8815000 front 180)
+         (place "L2" 11580000 -9395000 front 0)
+      )
+      (component "SOT:SOT23-6"
+         (place "Q1" 11560000 -9105000 front 270)
+      )
+      (component "Resistors:RES_0603"
+         (place "R1" 11620000 -9735000 front 180)
+         (place "R2" 16105000 -9930000 front 270)
+         (place "R3" 15770000 -9785000 front 180)
+         (place "R4" 15770000 -9605000 front 0)
+         (place "R6" 10865000 -10115000 front 180)
+         (place "R7" 12055900 -11363700 front 90)
+         (place "R8" 13890000 -9085000 front 270)
+         (place "R9" 12870000 -8270000 front 0)
+         (place "R10" 12450000 -9835000 front 0)
+         (place "R11" 13840000 -8225000 front 90)
+         (place "R12" 14915000 -11715000 front 0)
+         (place "R13" 14495000 -11705000 front 0)
+         (place "R14" 14910000 -11175000 front 0)
+         (place "R15" 14500000 -11175000 front 0)
+         (place "R16" 13755000 -10655000 front 0)
+         (place "R17" 13095000 -10795000 front 90)
+         (place "R18" 13010000 -11295000 front 0)
+         (place "R19" 12935000 -11585000 front 90)
+      )
+      (component "Resistors:VAR_PTV09A-4"
+         (place "R5" 15840000 -11555000 front 180)
+      )
+      (component "BtnsSwitches:BTN_6x6"
+         (place "SW1" 15840000 -8220000 front 0)
+      )
+      (component "Connectors:USBmicro_MOLEX_WM17142"
+         (place "XL1" 10570000 -9105000 front 0)
+      )
+      (component "Connectors:AUDIO_CKX3_5_30"
+         (place "XL2" 16610000 -9020000 front 0)
+      )
+      (component "Connectors:PLS-4"
+         (place "XL3" 11585000 -11520000 front 90)
+      )
+      (component "Connectors:PLS-3"
+         (place "XL4" 10835000 -8100000 front 180)
+      )
+      (component "Quartz:0503x4-4"
+         (place "XTAL1" 14230000 -9220000 front 270)
+      )
+      (component "LEDs:LED_Through-Hole-3mm"
+         (place "D2" 10365000 -10115000 front 180)
+         (place "D3" 14570000 -8190000 front 90)
+         (place "D4" 14980000 -8180000 front 90)
+         (place "D5" 14180000 -8190000 front 90)
+      )
+      (component "PCB:TESTPOINT_1MM"
+         (place "TP1" 13500000 -8350000 front 180)
+         (place "TP2" 13325000 -8350000 front 180)
+         (place "TP3" 13155000 -8365000 front 180)
+      )
+   )
+   (routes
+      (resolution mm 100000)
+      (library_out
+         (padstack "Via[0-1]_600:400_um"
+            (shape (circ "F.Cu" 60000 0 0))
+            (shape (circ "B.Cu" 60000 0 0))
+         )
+      )
+      (network_out
+         (net "/SHLD"
+         )
+         (net "GND"
+         )
+         (net "/USB_IN_1"
+         )
+         (net "+5V"
+         )
+         (net "Net-(C5-Pad1)"
+         )
+         (net "AGND"
+         )
+         (net "Net-(C6-Pad1)"
+         )
+         (net "/MIC_IN"
+         )
+         (net "Net-(C7-Pad1)"
+         )
+         (net "Net-(C8-Pad1)"
+         )
+         (net "+3.3V_A"
+         )
+         (net "+3.3V"
+         )
+         (net "Net-(C22-Pad2)"
+         )
+         (net "Net-(C24-Pad1)"
+         )
+         (net "Net-(C25-Pad1)"
+         )
+         (net "Net-(C26-Pad1)"
+         )
+         (net "Net-(C26-Pad2)"
+         )
+         (net "Net-(C27-Pad1)"
+         )
+         (net "Net-(C28-Pad1)"
+         )
+         (net "Net-(C28-Pad2)"
+         )
+         (net "Net-(C29-Pad1)"
+         )
+         (net "Net-(C30-Pad1)"
+         )
+         (net "Net-(C30-Pad2)"
+         )
+         (net "Net-(C31-Pad1)"
+         )
+         (net "/ADC_IN"
+         )
+         (net "Net-(C32-Pad2)"
+         )
+         (net "Net-(C33-Pad1)"
+         )
+         (net "Net-(D1-Pad6)"
+         )
+         (net "Net-(D1-Pad9)"
+         )
+         (net "Net-(D1-Pad10)"
+         )
+         (net "/MIC_BIAS"
+         )
+         (net "Net-(D1-Pad14)"
+         )
+         (net "Net-(D2-PadA)"
+         )
+         (net "Net-(D3-PadA)"
+         )
+         (net "Net-(D4-PadA)"
+         )
+         (net "Net-(D5-PadA)"
+         )
+         (net "/SCK"
+         )
+         (net "/DOUT"
+         )
+         (net "/CSIN"
+         )
+         (net "Net-(DD1-Pad6)"
+         )
+         (net "Net-(DD1-Pad18)"
+         )
+         (net "Net-(DD1-Pad19)"
+         )
+         (net "/GAIN_CTRL"
+         )
+         (net "/TX"
+         )
+         (net "/RX"
+         )
+         (net "/D-"
+         )
+         (net "/D+"
+         )
+         (net "/SWDIO"
+         )
+         (net "/SWCLK"
+         )
+         (net "Net-(DD1-Pad40)"
+         )
+         (net "Net-(DD1-Pad41)"
+         )
+         (net "Net-(DD1-Pad42)"
+         )
+         (net "/AMP_OUT"
+         )
+         (net "/USB_IN_2"
+         )
+      )
+   )
+)
