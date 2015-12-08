@@ -198,7 +198,7 @@ void Clk_t::SetupFlashLatency(uint8_t AHBClk_MHz) {
 
 void Clk_t::PrintFreqs() {
     Uart.Printf(
-            "\rAHBFreq=%uMHz; APB1Freq=%uMHz; APB2Freq=%uMHz; TimMulti=%u",
+            "AHBFreq=%uMHz; APB1Freq=%uMHz; APB2Freq=%uMHz; TimMulti=%u\r",
             Clk.AHBFreqHz/1000000, Clk.APB1FreqHz/1000000, Clk.APB2FreqHz/1000000,
             Timer9ClkMulti);
 }

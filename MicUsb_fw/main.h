@@ -14,7 +14,7 @@
 #include "evt_mask.h"
 #include "board.h"
 
-#define APP_NAME            "CalmaAcc"
+#define APP_NAME            "MicUSB"
 #define APP_VERSION         __DATE__ " " __TIME__
 
 class App_t {

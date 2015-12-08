@@ -15,7 +15,7 @@
 #include "board.h"
 
 // Set to true if RX needed
-#define UART_RX_ENABLED     FALSE
+#define UART_RX_ENABLED     TRUE
 
 #define UART_USE_DMA        TRUE
 
