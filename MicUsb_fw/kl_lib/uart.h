@@ -15,7 +15,7 @@
 #include "board.h"
 
 // Set to true if RX needed
-#define UART_RX_ENABLED     TRUE
+#define UART_RX_ENABLED     FALSE
 
 #define UART_USE_DMA        TRUE
 
@@ -74,6 +74,9 @@ public:
     void Printf(const char *S, ...);
     void PrintfI(const char *S, ...);
     void FlushTx() { while(!IDmaIsIdle); }  // wait DMA
+#else
+    void Printf(const char *S, ...) {}
+    void PrintfI(const char *S, ...) {}
 #endif
     void PrintfNow(const char *S, ...);
 

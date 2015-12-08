@@ -10,19 +10,26 @@
 App_t App;
 
 int main(void) {
+
     // ==== Setup clock frequency ====
     uint8_t ClkResult = 1;
-    Clk.SetupFlashLatency(8);  // Setup Flash Latency for clock in MHz
-    Clk.SetupBusDividers(ahbDiv1, apbDiv1);
+//    Clk.SetupFlashLatency(8);  // Setup Flash Latency for clock in MHz
+//    Clk.SetupBusDividers(ahbDiv1, apbDiv1, apbDiv1);
     Clk.UpdateFreqValues();
 
     // Init OS
     halInit();
     chSysInit();
 
+    PinSetupOut(GPIOB, 0, omPushPull);
+
     // ==== Init hardware ====
-    Uart.Init(115200, UART_GPIO, UART_TX_PIN, UART_GPIO, UART_RX_PIN);
+    Uart.Init(115200, UART_GPIO, UART_TX_PIN);//, UART_GPIO, UART_RX_PIN);
+    Uart.PrintfNow("\raga\r");
     Uart.Printf("\r%S %S", APP_NAME, APP_VERSION);
+
+    PinSet(GPIOB, 0);
+
     Clk.PrintFreqs();
     if(ClkResult != 0) Uart.Printf("\rXTAL failure");
 

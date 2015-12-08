@@ -84,7 +84,7 @@ void Uart_t::ISendViaDMA() {
 
 #if 1 // ==== Print Now ====
 static inline void FPutCharNow(char c) {
-#if defined STM32L1XX_MD || defined STM32F2XX || defined STM32F4XX || defined STM32F10X_LD_VL
+#if defined STM32L1XX || defined STM32F2XX || defined STM32F4XX || defined STM32F10X_LD_VL
     while(!(UART->SR & USART_SR_TXE));
     UART_TX_REG = c;
     while(!(UART->SR & USART_SR_TXE));
@@ -164,6 +164,7 @@ void Uart_t::Init(uint32_t ABaudrate, GPIO_TypeDef *PGpioTx, const uint16_t APin
     else if(UART == USART2) {rccEnableUSART2(FALSE); }
 
     OnAHBFreqChange();  // Setup baudrate
+
     UART->CR2 = 0;
 #if UART_USE_DMA    // ==== DMA ====
     dmaStreamAllocate     (UART_DMA_TX, IRQ_PRIO_MEDIUM, CmdUartTxIrq, NULL);
@@ -196,7 +197,7 @@ void Uart_t::Init(uint32_t ABaudrate, GPIO_TypeDef *PGpioTx, const uint16_t APin
 }
 
 void Uart_t::OnAHBFreqChange() {
-#if defined STM32L1XX_MD || defined STM32F100_MCUCONF
+#if defined STM32L1XX || defined STM32F100_MCUCONF
     if(UART == USART1) UART->BRR = Clk.APB2FreqHz / IBaudrate;
     else               UART->BRR = Clk.APB1FreqHz / IBaudrate;
 #elif defined STM32F030

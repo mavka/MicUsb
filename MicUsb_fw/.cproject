@@ -52,6 +52,7 @@
 									<listOptionValue builtIn="false" value="../os/ports"/>
 									<listOptionValue builtIn="false" value="../os/hal"/>
 									<listOptionValue builtIn="false" value="../os/CMSIS"/>
+									<listOptionValue builtIn="false" value="../os/hal/stm32L151xC"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.232389275" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
