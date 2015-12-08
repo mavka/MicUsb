@@ -6,8 +6,11 @@
  */
 
 #include "main.h"
+#include "usb_audio.h"
 
 App_t App;
+
+const PinOutput_t LedUSB = {LEDUSB_GPIO, LEDUSB_PIN, omPushPull};
 
 int main(void) {
 
@@ -24,18 +27,20 @@ int main(void) {
     halInit();
     chSysInit();
 
-    PinSetupOut(GPIOB, 0, omPushPull);
+    // Leds
+    LedUSB.Init();
 
     // ==== Init hardware ====
     Uart.Init(115200, UART_GPIO, UART_TX_PIN, UART_GPIO, UART_RX_PIN);
     Uart.Printf("\r%S %S\r", APP_NAME, APP_VERSION);
 
-    PinSet(GPIOB, 0);
-
     Clk.PrintFreqs();
     if(ClkResult != 0) Uart.Printf("XTAL failure\r");
 
     App.InitThread();
+
+    UsbAu.Init();
+    UsbAu.Connect();
 
     // Main cycle
     App.ITask();
@@ -49,6 +54,16 @@ void App_t::ITask() {
             OnCmd((Shell_t*)&Uart);
             Uart.SignalCmdProcessed();
         }
+#if 1 // ==== USB ====
+        if(EvtMsk & EVTMSK_USB_READY) {
+            Uart.Printf("\rUsbReady");
+            LedUSB.SetHi();
+        }
+        if(EvtMsk & EVTMSK_USB_SUSPEND) {
+            Uart.Printf("\rUsbSuspend");
+            LedUSB.SetLo();
+        }
+#endif
 
     } // while true
 }

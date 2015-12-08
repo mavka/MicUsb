@@ -55,7 +55,7 @@
  */
 void halInit(void) {
   /* Initializes the OS Abstraction Layer.*/
-  osalInit();
+//  osalInit(); // @KL Empty func, stop waste time
 
   /* Platform low level initializations.*/
   hal_lld_init();

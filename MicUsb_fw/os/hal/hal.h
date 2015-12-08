@@ -59,7 +59,7 @@
 //#include "sdc.h"
 //#include "spi.h"
 //#include "uart.h"
-//#include "usb.h"
+#include "usb.h"
 
 /*
  *  The ST driver is a special case, it is only included if the OSAL is
