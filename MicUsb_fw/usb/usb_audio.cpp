@@ -19,9 +19,21 @@ UsbAudio_t UsbAu;
 
 bool OnSetupPkt(USBDriver *usbp);
 
+const int16_t sinconst[16] = {
+        0, 1000, 3000, 5000, 7000, 5000, 3000, 1000, 0, -1000, -3000, -5000, -7000, -5000, -3000, -1000
+};
+
 #if 1 // ========================== Endpoints ==================================
 // ==== EP1 ====
-void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {  }
+void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
+//    usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)&sinconst[0], 54);
+//    chSysLockFromISR();
+//    usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
+//    chSysUnlockFromISR();
+}
+void OnSetupTransmitted(USBDriver *usbp) {
+    Uart.PrintfI("Callback\r");
+}
 
 static USBInEndpointState ep1instate;
 
@@ -32,7 +44,7 @@ static const USBEndpointConfig ep1config = {
     OnDataTransmitted,      // in_cb
     NULL,                   // out_cb
     64,                     // in_maxsize
-    64,                     // out_maxsize
+    0,                      // out_maxsize
     &ep1instate,            // in_state
     NULL,                   // out_state
     2,                      // in_multiplier: Determines the space allocated for the TXFIFO as multiples of the packet size
@@ -52,14 +64,14 @@ static void usb_event(USBDriver *usbp, usbevent_t event) {
             /* Enable the endpoints specified in the configuration.
             Note, this callback is invoked from an ISR so I-Class functions must be used.*/
             usbInitEndpointI(usbp, EP_DATA_IN_ID, &ep1config);
-//            sduConfigureHookI(&UsbCDC.SDU2);   // Resetting the state of the CDC subsystem
             App.SignalEvtI(EVTMSK_USB_READY);
+
+//            usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)&sinconst[0], 54);
+//            usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
+
             chSysUnlockFromISR();
             return;
         case USB_EVENT_SUSPEND:
-            chSysLockFromISR();
-            App.SignalEvtI(EVTMSK_USB_SUSPEND);
-            chSysUnlockFromISR();
             return;
         case USB_EVENT_WAKEUP:
             return;
@@ -90,24 +102,28 @@ struct SetupPkt_t {
  * false        Message not handled. */
 bool OnSetupPkt(USBDriver *usbp) {
     SetupPkt_t *Setup = (SetupPkt_t*)usbp->setup;
+//    Uart.PrintfI("%X %X %X %X %X\r", Setup->bmRequestType, Setup->bRequest, Setup->wValue, Setup->wIndex, Setup->wLength);
     if(Setup->bmRequestType == 0x01) { // Host2Device, standard, recipient=interface
-        if(Setup->bRequest == USB_REQ_SET_INTERFACE) {
-            if(Setup->wIndex == 1) {
-                usbSetupTransfer(usbp, NULL, 0, NULL);
-                // wValue contains alternate setting
-                chSysLockFromISR();
-                if(Setup->wValue == 1) {    // Transmission on
+        usbSetupTransfer(usbp, NULL, 0, OnSetupTransmitted);
+        return true;
+//        if(Setup->bRequest == USB_REQ_SET_INTERFACE) {
+//            if(Setup->wIndex == 1) {
+//                Uart.PrintfI("Aga\r");
+//                usbSetupTransfer(usbp, NULL, 0, OnSetupTransmitted);
+//                // wValue contains alternate setting
+//                chSysLockFromISR();
+//                if(Setup->wValue == 1) {    // Transmission on
 //                    App.SignalEvtI(EVTMSK_START_LISTEN);
-                    UsbAu.IsListening = true;
-                }
-                else {
+//                    UsbAu.IsListening = true;
+//                }
+//                else {
 //                    App.SignalEvtI(EVTMSK_STOP_LISTEN);
-                    UsbAu.IsListening = false;
-                }
-                chSysUnlockFromISR();
-                return true;
-            }
-        }
+//                    UsbAu.IsListening = false;
+//                }
+//                chSysUnlockFromISR();
+//                return true;
+//            }
+//        }
     }
     return false;
 }
@@ -125,14 +141,6 @@ void UsbAudio_t::SendBufI(uint8_t *Ptr, uint32_t Len) {
             chSysUnlockFromISR();
         }
     }
-}
-
-
-void UsbAudio_t::Init() {
-    // GPIO
-//    PinSetupAlterFunc(GPIOA, 11, omOpenDrain, pudNone, AF10);
-//    PinSetupAlterFunc(GPIOA, 12, omOpenDrain, pudNone, AF10);
-    // Objects
 }
 
 void UsbAudio_t::Connect() {

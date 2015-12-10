@@ -29,6 +29,8 @@ int main(void) {
 
     // Leds
     LedUSB.Init();
+    PinSetupOut(GPIOB, 0, omPushPull);
+    PinSetupOut(GPIOB, 4, omPushPull);
 
     // ==== Init hardware ====
     Uart.Init(115200, UART_GPIO, UART_TX_PIN, UART_GPIO, UART_RX_PIN);
@@ -39,7 +41,6 @@ int main(void) {
 
     App.InitThread();
 
-    UsbAu.Init();
     UsbAu.Connect();
 
     // Main cycle
@@ -56,17 +57,20 @@ void App_t::ITask() {
         }
 #if 1 // ==== USB ====
         if(EvtMsk & EVTMSK_USB_READY) {
-            Uart.Printf("\rUsbReady");
+            Uart.Printf("UsbReady\r");
             LedUSB.SetHi();
         }
-        if(EvtMsk & EVTMSK_USB_SUSPEND) {
-            Uart.Printf("\rUsbSuspend");
-            LedUSB.SetLo();
+        if(EvtMsk & EVTMSK_START_LISTEN) {
+            Uart.Printf("START_LISTEN\r");
+        }
+        if(EvtMsk & EVTMSK_STOP_LISTEN) {
+            Uart.Printf("STOP_LISTEN\r");
         }
 #endif
 
     } // while true
 }
+
 
 #if 1 // ======================= Command processing ============================
 void App_t::OnCmd(Shell_t *PShell) {
@@ -74,7 +78,12 @@ void App_t::OnCmd(Shell_t *PShell) {
     __attribute__((unused)) int32_t dw32 = 0;  // May be unused in some configurations
     Uart.Printf("\r%S\r", PCmd->Name);
     // Handle command
-    if(PCmd->NameIs("Ping")) PShell->Ack(OK);
+    if(PCmd->NameIs("Ping")) {
+//        uint16_t istr = STM32_USB->ISTR;
+//        uint16_t cntr = STM32_USB->CNTR;
+//        Uart.Printf("istr %04X; cntr %04X\r", istr, cntr); // XXX
+        PShell->Ack(OK);
+    }
 
     else PShell->Ack(CMD_UNKNOWN);
 }

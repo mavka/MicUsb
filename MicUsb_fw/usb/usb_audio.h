@@ -14,7 +14,6 @@ class UsbAudio_t {
 private:
 public:
     bool IsListening = false;
-    void Init();
     void Connect();
     void Disconnect();
     bool IsActive() { return false; }

@@ -270,7 +270,7 @@ static void usb_packet_write_from_queue(stm32_usb_descriptor_t *udp,
 OSAL_IRQ_HANDLER(STM32_USB1_HP_HANDLER) {
 
   OSAL_IRQ_PROLOGUE();
-
+  GPIOB->ODR  ^= (uint16_t)(1<<4);
   OSAL_IRQ_EPILOGUE();
 }
 #endif /* STM32_USB1_LP_NUMBER != STM32_USB1_HP_NUMBER */
@@ -449,7 +449,7 @@ void usb_lld_start(USBDriver *usbp) {
       /* Enabling the USB IRQ vectors, this also gives enough time to allow
          the transceiver power up (1uS).*/
 #if STM32_USB1_HP_NUMBER != STM32_USB1_LP_NUMBER
-      nvicEnableVector(STM32_USB1_HP_NUMBER, STM32_USB_USB1_HP_IRQ_PRIORITY);
+      // @KL nvicEnableVector(STM32_USB1_HP_NUMBER, STM32_USB_USB1_HP_IRQ_PRIORITY);
 #endif
       nvicEnableVector(STM32_USB1_LP_NUMBER, STM32_USB_USB1_LP_IRQ_PRIORITY);
       /* Releases the USB reset.*/
@@ -536,6 +536,7 @@ void usb_lld_set_address(USBDriver *usbp) {
  *
  * @notapi
  */
+
 void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
   uint16_t nblocks, epr;
   stm32_usb_descriptor_t *dp;

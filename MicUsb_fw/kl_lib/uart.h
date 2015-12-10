@@ -20,7 +20,7 @@
 #define UART_USE_DMA        TRUE
 
 // ==== TX ====
-#define UART_TXBUF_SZ       250
+#define UART_TXBUF_SZ       2048
 
 #define UART_DMA_TX_MODE    STM32_DMA_CR_CHSEL(UART_DMA_CHNL) | \
                             DMA_PRIORITY_LOW | \
