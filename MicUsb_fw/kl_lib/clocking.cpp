@@ -101,10 +101,15 @@ void Clk_t::UpdateFreqValues() {
     tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
     AHBFreqHz = SysClkHz >> tmp;
     // APB freq
-    tmp = APBPrescTable[(RCC->CFGR & RCC_CFGR_PPRE1) >> 8];
+    uint32_t APB1prs = (RCC->CFGR & RCC_CFGR_PPRE1) >> 8;
+    uint32_t APB2prs = (RCC->CFGR & RCC_CFGR_PPRE2) >> 8;
+    tmp = APBPrescTable[APB1prs];
     APB1FreqHz = AHBFreqHz >> tmp;
-    tmp = APBPrescTable[(RCC->CFGR & RCC_CFGR_PPRE2) >> 11];
+    tmp = APBPrescTable[APB2prs];
     APB2FreqHz = AHBFreqHz >> tmp;
+    // Timer multi
+    Timer2_7ClkMulti = (APB1prs < 4)? 1 : 2;
+    Timer9_11ClkMulti = (APB2prs < 4)? 1 : 2;
 }
 
 // ==== Common use ====
@@ -198,9 +203,9 @@ void Clk_t::SetupFlashLatency(uint8_t AHBClk_MHz) {
 
 void Clk_t::PrintFreqs() {
     Uart.Printf(
-            "AHBFreq=%uMHz; APB1Freq=%uMHz; APB2Freq=%uMHz; TimMulti=%u\r",
+            "AHBFreq=%uMHz; APB1Freq=%uMHz; APB2Freq=%uMHz; Tim 2...7 Multi=%u; Tim 9...11 Multi=%u\r",
             Clk.AHBFreqHz/1000000, Clk.APB1FreqHz/1000000, Clk.APB2FreqHz/1000000,
-            Timer9ClkMulti);
+            Timer2_7ClkMulti, Timer9_11ClkMulti);
 }
 
 // =============================== V Core ======================================

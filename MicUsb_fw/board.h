@@ -51,6 +51,7 @@
 #define ADC_CSIN_PIN    4
 #define ADC_SCK_PIN     5
 #define ADC_DOUT_PIN    6
+#define ADC_SPI_AF      AF5
 
 // Button
 #define BTN_GPIO        GPIOB
@@ -59,6 +60,12 @@
 // Amplifier
 #define GAIN_CTRL_GPIO  GPIOB
 #define GAIN_CTRL_PIN   14
+
+#if 1 // ========================= Timer =======================================
+#define SAMPLING_TMR            TIM9
+#define SAMPLING_TMR_IRQ        TIM9_IRQn
+#define SAMPLING_TMR_IRQHandler STM32_TIM9_HANDLER
+#endif
 
 #if 1 // =========================== SPI =======================================
 #define SPI_ADC         SPI1
@@ -71,7 +78,7 @@
 #define UART_RX_REG     UART->DR
 #endif
 
-#if 0 // =========================== ADC =======================================
+#if 0 // ========================= Inner ADC ===================================
 #define ADC_REQUIRED        TRUE
 // Clock divider: clock is generated from the APB2
 #define ADC_CLK_DIVIDER		adcDiv2	// 32MHz / 2 = 16MHz
@@ -99,6 +106,9 @@ const uint8_t AdcChannels[] = { SNS_CHNL0, SNS_CHNL1 };
 #define UART_DMA_TX     STM32_DMA1_STREAM4
 #define UART_DMA_RX     STM32_DMA1_STREAM5
 #define UART_DMA_CHNL   0   // Dummy
+
+#define DMA_ADC         STM32_DMA1_STREAM2
+
 
 #if ADC_REQUIRED
 /* DMA request mapped on this DMA channel only if the corresponding remapping bit is cleared in the SYSCFG_CFGR1

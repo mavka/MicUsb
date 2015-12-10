@@ -13,7 +13,7 @@
 
 #if 1 // ============================= Timer ===================================
 void Timer_t::Init() {
-#if defined STM32L1XX_MD
+#if defined STM32L1XX
     if(ANY_OF_3(ITmr, TIM9, TIM10, TIM11)) PClk = &Clk.APB2FreqHz;
     else PClk = &Clk.APB1FreqHz;
     if     (ITmr == TIM2)  { rccEnableTIM2(FALSE); }
@@ -131,6 +131,13 @@ void Timer_t::SetUpdateFrequency(uint32_t FreqHz) {
     	SetTopValue((*PClk * Clk.TimerAPB2ClkMulti) / FreqHz);
     else // APB1 is clock src
     	SetTopValue((*PClk * Clk.TimerAPB1ClkMulti) / FreqHz);
+#elif defined STM32L1XX
+    uint32_t TopVal;
+    if(ANY_OF_3(ITmr, TIM9, TIM10, TIM11)) // APB2 is clock src
+        TopVal  = ((*PClk * Clk.Timer9_11ClkMulti) / FreqHz) - 1;
+    else TopVal = ((*PClk * Clk.Timer2_7ClkMulti) / FreqHz) - 1;
+    Uart.Printf("Topval = %u\r", TopVal);
+    SetTopValue(TopVal);
 #else
 //    uint32_t UpdFreqMax = *PClk / (ITmr->ARR + 1);
 #endif

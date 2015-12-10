@@ -99,7 +99,6 @@ bool OnSetupPkt(USBDriver *usbp) {
     if(Setup->bmRequestType == 0x01) { // Host2Device, standard, recipient=interface
         if(Setup->bRequest == USB_REQ_SET_INTERFACE) {
             if(Setup->wIndex == 1) {
-                Uart.PrintfI("Aga\r");
                 usbSetupTransfer(usbp, NULL, 0, NULL);
                 // wValue contains alternate setting
                 chSysLockFromISR();

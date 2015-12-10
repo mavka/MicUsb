@@ -7,10 +7,17 @@
 
 #include "main.h"
 #include "usb_audio.h"
+#include "adc_ads8320.h"
 
 App_t App;
+Timer_t SamplingTmr = {SAMPLING_TMR};
 
 const PinOutput_t LedUSB = {LEDUSB_GPIO, LEDUSB_PIN, omPushPull};
+const PinOutput_t Led[3] = {
+        {LED1_GPIO, LED1_PIN, omPushPull},
+        {LED3_GPIO, LED3_PIN, omPushPull},
+        {LED4_GPIO, LED4_PIN, omPushPull},
+};
 
 int main(void) {
 
@@ -27,11 +34,6 @@ int main(void) {
     halInit();
     chSysInit();
 
-    // Leds
-    LedUSB.Init();
-    PinSetupOut(GPIOB, 0, omPushPull);
-    PinSetupOut(GPIOB, 4, omPushPull);
-
     // ==== Init hardware ====
     Uart.Init(115200, UART_GPIO, UART_TX_PIN, UART_GPIO, UART_RX_PIN);
     Uart.Printf("\r%S %S\r", APP_NAME, APP_VERSION);
@@ -41,7 +43,21 @@ int main(void) {
 
     App.InitThread();
 
-    UsbAu.Connect();
+    // Leds
+    LedUSB.Init();
+    for(uint8_t i=0; i<3; i++) Led[i].Init();
+
+    Adc.Init();
+
+    // ==== Sampling timer ====
+    SamplingTmr.Init();
+    SamplingTmr.SetUpdateFrequency(16000); // Start Fsmpl value
+    SamplingTmr.EnableIrq(SAMPLING_TMR_IRQ, IRQ_PRIO_MEDIUM);
+    SamplingTmr.EnableIrqOnUpdate();
+    SamplingTmr.Enable();
+
+    // Connect USB
+//    UsbAu.Connect();
 
     // Main cycle
     App.ITask();
@@ -61,16 +77,19 @@ void App_t::ITask() {
             LedUSB.SetHi();
         }
         if(EvtMsk & EVTMSK_START_LISTEN) {
-            Uart.Printf("START_LISTEN\r");
+//            Uart.Printf("START_LISTEN\r");
         }
         if(EvtMsk & EVTMSK_STOP_LISTEN) {
-            Uart.Printf("STOP_LISTEN\r");
+//            Uart.Printf("STOP_LISTEN\r");
         }
 #endif
 
+        if(EvtMsk & EVTMSK_ADC_DONE) {
+            Led[0].SetLo();
+        }
+
     } // while true
 }
-
 
 #if 1 // ======================= Command processing ============================
 void App_t::OnCmd(Shell_t *PShell) {
@@ -84,5 +103,25 @@ void App_t::OnCmd(Shell_t *PShell) {
 
     else PShell->Ack(CMD_UNKNOWN);
 }
+
+#endif
+
+#if 1 // ============================= IRQ =====================================
+// Sampling IRQ: start new measurement. ADC will inform app when completed.
+#if 1 // ==== Sampling Timer =====
+extern "C" {
+void SAMPLING_TMR_IRQHandler(void) {
+    CH_IRQ_PROLOGUE();
+    chSysLockFromISR();
+    if(SAMPLING_TMR->SR & TIM_SR_UIF) {
+        SAMPLING_TMR->SR &= ~TIM_SR_UIF;
+        Adc.StartDMAMeasure();
+        Led[0].SetHi();
+    }
+    chSysUnlockFromISR();
+    CH_IRQ_EPILOGUE();
+}
+}
+#endif
 
 #endif
