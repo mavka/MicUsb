@@ -79,9 +79,6 @@ void App_t::OnCmd(Shell_t *PShell) {
     Uart.Printf("\r%S\r", PCmd->Name);
     // Handle command
     if(PCmd->NameIs("Ping")) {
-//        uint16_t istr = STM32_USB->ISTR;
-//        uint16_t cntr = STM32_USB->CNTR;
-//        Uart.Printf("istr %04X; cntr %04X\r", istr, cntr); // XXX
         PShell->Ack(OK);
     }
 

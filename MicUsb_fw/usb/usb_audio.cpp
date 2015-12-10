@@ -26,13 +26,10 @@ const int16_t sinconst[16] = {
 #if 1 // ========================== Endpoints ==================================
 // ==== EP1 ====
 void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
-//    usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)&sinconst[0], 54);
+//    usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)&sinconst[0], 32);
 //    chSysLockFromISR();
 //    usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
 //    chSysUnlockFromISR();
-}
-void OnSetupTransmitted(USBDriver *usbp) {
-    Uart.PrintfI("Callback\r");
 }
 
 static USBInEndpointState ep1instate;
@@ -65,10 +62,6 @@ static void usb_event(USBDriver *usbp, usbevent_t event) {
             Note, this callback is invoked from an ISR so I-Class functions must be used.*/
             usbInitEndpointI(usbp, EP_DATA_IN_ID, &ep1config);
             App.SignalEvtI(EVTMSK_USB_READY);
-
-//            usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)&sinconst[0], 54);
-//            usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
-
             chSysUnlockFromISR();
             return;
         case USB_EVENT_SUSPEND:
@@ -104,26 +97,24 @@ bool OnSetupPkt(USBDriver *usbp) {
     SetupPkt_t *Setup = (SetupPkt_t*)usbp->setup;
 //    Uart.PrintfI("%X %X %X %X %X\r", Setup->bmRequestType, Setup->bRequest, Setup->wValue, Setup->wIndex, Setup->wLength);
     if(Setup->bmRequestType == 0x01) { // Host2Device, standard, recipient=interface
-        usbSetupTransfer(usbp, NULL, 0, OnSetupTransmitted);
-        return true;
-//        if(Setup->bRequest == USB_REQ_SET_INTERFACE) {
-//            if(Setup->wIndex == 1) {
-//                Uart.PrintfI("Aga\r");
-//                usbSetupTransfer(usbp, NULL, 0, OnSetupTransmitted);
-//                // wValue contains alternate setting
-//                chSysLockFromISR();
-//                if(Setup->wValue == 1) {    // Transmission on
-//                    App.SignalEvtI(EVTMSK_START_LISTEN);
-//                    UsbAu.IsListening = true;
-//                }
-//                else {
-//                    App.SignalEvtI(EVTMSK_STOP_LISTEN);
-//                    UsbAu.IsListening = false;
-//                }
-//                chSysUnlockFromISR();
-//                return true;
-//            }
-//        }
+        if(Setup->bRequest == USB_REQ_SET_INTERFACE) {
+            if(Setup->wIndex == 1) {
+                Uart.PrintfI("Aga\r");
+                usbSetupTransfer(usbp, NULL, 0, NULL);
+                // wValue contains alternate setting
+                chSysLockFromISR();
+                if(Setup->wValue == 1) {    // Transmission on
+                    App.SignalEvtI(EVTMSK_START_LISTEN);
+                    UsbAu.IsListening = true;
+                }
+                else {
+                    App.SignalEvtI(EVTMSK_STOP_LISTEN);
+                    UsbAu.IsListening = false;
+                }
+                chSysUnlockFromISR();
+                return true;
+            }
+        }
     }
     return false;
 }
