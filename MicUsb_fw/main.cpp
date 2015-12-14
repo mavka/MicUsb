@@ -63,8 +63,6 @@ int main(void) {
     App.ITask();
 }
 
-uint32_t cnt = 0;
-
 __attribute__ ((__noreturn__))
 void App_t::ITask() {
     while(true) {
@@ -95,30 +93,13 @@ void App_t::ITask() {
             x1 = x0;
             y1 = y0;
             UsbAu.Put(y0);
-//            if(Enabled) UsbAu.Put(y0);
-
-            cnt++;
-//            if(cnt == 16000) {
-//                cnt = 0;
-//                Uart.Printf("t=%u\r", chVTGetSystemTime());
-//            }
-
-
-//            UsbAu.Buf.Put(Adc.Rslt);
-//                Uart.Printf("%u\r", Adc.Rslt);
             Led[0].SetLo();
         }
-
     } // while true
 }
 
 void OnSOF(USBDriver *usbp) {
-//    SamplingTmr.Disable();
     SAMPLING_TMR->CNT = SAMPLING_TMR->ARR - 4;
-    if(cnt != 16) Uart.PrintfI("%u\r", cnt);
-    cnt = 0;
-//    UsbAu.CheckAndSend();
-//    SamplingTmr.Enable();
 }
 
 #if 1 // ======================= Command processing ============================

@@ -67,32 +67,9 @@ const USBConfig UsbCfg = {
     usb_event,          // This callback is invoked when an USB driver event is registered
     GetDescriptor,      // Device GET_DESCRIPTOR request callback
     OnSetupPkt,         // This hook allows to be notified of standard requests or to handle non standard requests
-    OnSOF //NULL                // Start Of Frame callback
+    OnSOF               // Start Of Frame callback
 };
 
-
-//static int16_t Buf2Send[BUF_CNT];
-//static bool JustSent = false;
-//void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
-//    if(JustSent) {
-////        JustSent = false;
-//        usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, NULL, 0);
-//        chSysLockFromISR();
-//        usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
-//        chSysUnlockFromISR();
-//    }
-//    else {
-        // Copy data to Buf2Send
-//        uint32_t Cnt = UsbAu.Buf.GetFullCount();
-//        UsbAu.Buf.Get(Buf2Send, Cnt);
-//        // Send data
-//        usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)Buf2Send, Cnt*2); // 2 bytes per sample
-//        chSysLockFromISR();
-//        usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
-//        chSysUnlockFromISR();
-////        JustSent = true;
-//    }
-//}
 #endif
 
 struct SetupPkt_t {
