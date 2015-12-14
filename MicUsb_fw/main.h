@@ -36,4 +36,6 @@ public:
 
 extern App_t App;
 
+void OnSOF(USBDriver *usbp);
+
 #endif /* MAIN_H_ */

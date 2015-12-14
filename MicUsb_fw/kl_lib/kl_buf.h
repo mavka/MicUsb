@@ -74,6 +74,10 @@ public:
         }
         else PRead += ALength;
     }
+    void Flush() {
+        IFullSlotsCount = 0;
+        PRead = PWrite;
+    }
 };
 #endif
 

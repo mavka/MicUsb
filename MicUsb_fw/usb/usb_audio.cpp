@@ -18,11 +18,7 @@ UsbAudio_t UsbAu;
 #define USBDrv      USBD1   // USB driver to use
 
 static bool OnSetupPkt(USBDriver *usbp);
-static void OnDataTransmitted(USBDriver *usbp, usbep_t ep);
-
-const int16_t sinconst[16] = {
-        0, 1000, 3000, 5000, 7000, 5000, 3000, 1000, 0, -1000, -3000, -5000, -7000, -5000, -3000, -1000
-};
+static void OnDataTransmitted(USBDriver *usbp, usbep_t ep) { } // Should be implemented as there is no check if this callback is not null
 
 #if 1 // ========================== Endpoints ==================================
 // ==== EP1 ====
@@ -71,13 +67,13 @@ const USBConfig UsbCfg = {
     usb_event,          // This callback is invoked when an USB driver event is registered
     GetDescriptor,      // Device GET_DESCRIPTOR request callback
     OnSetupPkt,         // This hook allows to be notified of standard requests or to handle non standard requests
-    NULL                // Start Of Frame callback
+    OnSOF //NULL                // Start Of Frame callback
 };
 
 
 //static int16_t Buf2Send[BUF_CNT];
 //static bool JustSent = false;
-void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
+//void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
 //    if(JustSent) {
 ////        JustSent = false;
 //        usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, NULL, 0);
@@ -96,7 +92,7 @@ void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
 //        chSysUnlockFromISR();
 ////        JustSent = true;
 //    }
-}
+//}
 #endif
 
 struct SetupPkt_t {

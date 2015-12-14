@@ -63,9 +63,7 @@ int main(void) {
     App.ITask();
 }
 
-bool Enabled = false;
-
-//uint32_t cnt = 0;
+uint32_t cnt = 0;
 
 __attribute__ ((__noreturn__))
 void App_t::ITask() {
@@ -81,11 +79,9 @@ void App_t::ITask() {
             LedUSB.SetHi();
         }
         if(EvtMsk & EVTMSK_START_LISTEN) {
-            Enabled = true;
             Uart.Printf("START_LISTEN\r");
         }
         if(EvtMsk & EVTMSK_STOP_LISTEN) {
-            Enabled = false;
             Uart.Printf("STOP_LISTEN\r");
 
         }
@@ -101,7 +97,7 @@ void App_t::ITask() {
             UsbAu.Put(y0);
 //            if(Enabled) UsbAu.Put(y0);
 
-//            cnt++;
+            cnt++;
 //            if(cnt == 16000) {
 //                cnt = 0;
 //                Uart.Printf("t=%u\r", chVTGetSystemTime());
@@ -114,6 +110,15 @@ void App_t::ITask() {
         }
 
     } // while true
+}
+
+void OnSOF(USBDriver *usbp) {
+//    SamplingTmr.Disable();
+    SAMPLING_TMR->CNT = SAMPLING_TMR->ARR - 4;
+    if(cnt != 16) Uart.PrintfI("%u\r", cnt);
+    cnt = 0;
+//    UsbAu.CheckAndSend();
+//    SamplingTmr.Enable();
 }
 
 #if 1 // ======================= Command processing ============================

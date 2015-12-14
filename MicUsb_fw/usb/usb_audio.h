@@ -28,11 +28,17 @@ public:
 
     void Put(int16_t AValue) {
         Buf.Put(AValue);
-        if(Buf.GetFullCount() == 32) {
+        CheckAndSend();
+    }
+    void CheckAndSend() {
+        if(Buf.GetFullCount() >= 32) {
             chSysLock();
+//            chSysLockFromISR();
             Buf.Get(Buf2Send, 32);
             SendBufI((uint8_t*)Buf2Send, 64);
+//            Buf.Flush();
             chSysUnlock();
+//            chSysUnlockFromISR();
         }
     }
 
