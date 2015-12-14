@@ -24,6 +24,7 @@ private:
     Spi_t ISpi;
     void CsHi() { PinSet(ADC_GPIO, ADC_CSIN_PIN); }
     void CsLo() { PinClear(ADC_GPIO, ADC_CSIN_PIN); }
+    uint32_t IRslt;
 public:
     uint32_t Rslt;
     void Init();

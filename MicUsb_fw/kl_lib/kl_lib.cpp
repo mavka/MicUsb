@@ -136,7 +136,7 @@ void Timer_t::SetUpdateFrequency(uint32_t FreqHz) {
     if(ANY_OF_3(ITmr, TIM9, TIM10, TIM11)) // APB2 is clock src
         TopVal  = ((*PClk * Clk.Timer9_11ClkMulti) / FreqHz) - 1;
     else TopVal = ((*PClk * Clk.Timer2_7ClkMulti) / FreqHz) - 1;
-    Uart.Printf("Topval = %u\r", TopVal);
+//    Uart.Printf("Topval = %u\r", TopVal);
     SetTopValue(TopVal);
 #else
 //    uint32_t UpdFreqMax = *PClk / (ITmr->ARR + 1);

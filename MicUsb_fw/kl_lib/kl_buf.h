@@ -121,23 +121,15 @@ public:
 template <typename T, uint32_t Sz>
 class CircBufNumber_t : public CircBuf_t<T, Sz> {
 public:
-    uint8_t Get(T *p, uint32_t ALength) {
-        uint8_t Rslt = FAILURE;
-        if(this->IFullSlotsCount >= ALength) {  // if enough data
-            this->IFullSlotsCount -= ALength;   // 'Length' slots will be freed
-            uint32_t PartSz = (this->IBuf + Sz) - this->PRead;  // Data from PRead to right bound
-            if(ALength > PartSz) {
-                memcpy(p, this->PRead, PartSz);
-                this->PRead = this->IBuf;     // Start from beginning
-                p += PartSz;
-                ALength -= PartSz;
-            }
-            memcpy(p, this->PRead, ALength);
-            this->PRead += ALength;
-            if(this->PRead >= (this->IBuf + Sz)) this->PRead = this->IBuf;   // Circulate pointer
-            Rslt = OK;
+    uint32_t Get(T *p, uint32_t ALength) {
+        uint32_t Cnt = 0;
+        while(this->IFullSlotsCount > 0 and Cnt < ALength) {
+            *p++ = *this->PRead++;
+            if(this->PRead >= (this->IBuf + Sz)) this->PRead = this->IBuf;
+            this->IFullSlotsCount--;
+            Cnt++;
         }
-        return Rslt;
+        return Cnt; // return how many items were written
     }
 
     uint8_t Put(T *p, uint32_t Length) {

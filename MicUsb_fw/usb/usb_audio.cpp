@@ -17,7 +17,8 @@ UsbAudio_t UsbAu;
 
 #define USBDrv      USBD1   // USB driver to use
 
-bool OnSetupPkt(USBDriver *usbp);
+static bool OnSetupPkt(USBDriver *usbp);
+static void OnDataTransmitted(USBDriver *usbp, usbep_t ep);
 
 const int16_t sinconst[16] = {
         0, 1000, 3000, 5000, 7000, 5000, 3000, 1000, 0, -1000, -3000, -5000, -7000, -5000, -3000, -1000
@@ -25,15 +26,7 @@ const int16_t sinconst[16] = {
 
 #if 1 // ========================== Endpoints ==================================
 // ==== EP1 ====
-void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
-//    usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)&sinconst[0], 32);
-//    chSysLockFromISR();
-//    usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
-//    chSysUnlockFromISR();
-}
-
 static USBInEndpointState ep1instate;
-
 // EP1 initialization structure (both IN and OUT).
 static const USBEndpointConfig ep1config = {
     USB_EP_MODE_TYPE_ISOC,
@@ -80,6 +73,56 @@ const USBConfig UsbCfg = {
     OnSetupPkt,         // This hook allows to be notified of standard requests or to handle non standard requests
     NULL                // Start Of Frame callback
 };
+
+
+//static int16_t Buf2Send[BUF_CNT];
+//static bool JustSent = false;
+void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
+//    if(JustSent) {
+////        JustSent = false;
+//        usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, NULL, 0);
+//        chSysLockFromISR();
+//        usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
+//        chSysUnlockFromISR();
+//    }
+//    else {
+//        // Copy data to Buf2Send
+//        uint32_t Cnt = 33;//UsbAu.Buf.GetFullCount();
+//        UsbAu.Buf.Get(Buf2Send, Cnt);
+//    //    if(r != OK) Uart.PrintfI("r = %u\r", r);
+//        // Send data
+//        usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)Buf2Send, Cnt*2); // 2 bytes per sample
+//        chSysLockFromISR();
+//        usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
+//        chSysUnlockFromISR();
+////        JustSent = true;
+//    }
+}
+
+void onotify(io_queue_t *qp) {
+    size_t n;
+
+    /* If the USB driver is not in the appropriate state then transactions  must not be started.*/
+    if (usbGetDriverStateI(&USBDrv) != USB_ACTIVE) {
+      return;
+    }
+
+    /* If there is not an ongoing transaction and the output queue contains
+       data then a new transaction is started.*/
+    if (!usbGetTransmitStatusI(&USBDrv, EP_DATA_IN_ID)) {
+      if ((n = oqGetFullI(&UsbAu.oqueue)) > 0U) {
+          Uart.PrintfI("n=%u\r", n);
+        osalSysUnlock();
+
+        usbPrepareQueuedTransmit(&USBDrv,
+                EP_DATA_IN_ID,
+                &UsbAu.oqueue, n);
+
+        osalSysLock();
+        (void) usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
+      }
+    }
+}
 #endif
 
 struct SetupPkt_t {
@@ -139,19 +182,3 @@ void UsbAudio_t::Connect() {
     usbStart(&USBDrv, &UsbCfg);
     usbConnectBus(&USBDrv);
 }
-
-void UsbAudio_t::Put(uint16_t AValue) {
-    // If the USB driver is not in the appropriate state then transactions must not be started
-//    if(usbGetDriverStateI(&USBD1) != USB_ACTIVE) return;
-//    IBuf.Put(AValue);
-//    // If there is no ongoing transaction then a new transaction is started
-//    if(!usbGetTransmitStatusI(&USBD1, EP_DATA_IN_ID)) {
-//        IBuf.Get(&ISample.Word);     // Something will be there definitely, as AValue was put there
-//        usbPrepareTransmit(&USBD1, EP_DATA_IN_ID, ISample.b, 2);
-//        chSysLock();
-//        usbStartTransmitI(&USBD1, EP_DATA_IN_ID);
-//        chSysUnlock();
-//    } // if not transmitting
-}
-
-

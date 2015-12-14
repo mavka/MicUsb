@@ -35,7 +35,7 @@ int main(void) {
     chSysInit();
 
     // ==== Init hardware ====
-    Uart.Init(115200, UART_GPIO, UART_TX_PIN, UART_GPIO, UART_RX_PIN);
+    Uart.Init(256000, UART_GPIO, UART_TX_PIN, UART_GPIO, UART_RX_PIN);
     Uart.Printf("\r%S %S\r", APP_NAME, APP_VERSION);
 
     Clk.PrintFreqs();
@@ -56,12 +56,17 @@ int main(void) {
     SamplingTmr.EnableIrqOnUpdate();
     SamplingTmr.Enable();
 
+    UsbAu.Init();
     // Connect USB
-//    UsbAu.Connect();
+    UsbAu.Connect();
 
     // Main cycle
     App.ITask();
 }
+
+bool Enabled = false;
+
+//uint32_t cnt = 0;
 
 __attribute__ ((__noreturn__))
 void App_t::ITask() {
@@ -77,14 +82,35 @@ void App_t::ITask() {
             LedUSB.SetHi();
         }
         if(EvtMsk & EVTMSK_START_LISTEN) {
-//            Uart.Printf("START_LISTEN\r");
+            Enabled = true;
+            Uart.Printf("START_LISTEN\r");
         }
         if(EvtMsk & EVTMSK_STOP_LISTEN) {
-//            Uart.Printf("STOP_LISTEN\r");
+            Enabled = false;
+            Uart.Printf("STOP_LISTEN\r");
+
         }
 #endif
 
         if(EvtMsk & EVTMSK_ADC_DONE) {
+            // ==== Remove DC from input ====
+            static int32_t x1 = 0, y1=0;
+            int32_t x0 = Adc.Rslt / 2;
+            int32_t y0 = x0 - x1 + ((9999 * y1) / 10000);
+            x1 = x0;
+            y1 = y0;
+//            UsbAu.Buf.Put(y0);
+//            if(Enabled) UsbAu.Put(y0);
+
+//            cnt++;
+//            if(cnt == 16000) {
+//                cnt = 0;
+//                Uart.Printf("t=%u\r", chVTGetSystemTime());
+//            }
+
+
+//            UsbAu.Buf.Put(Adc.Rslt);
+//                Uart.Printf("%u\r", Adc.Rslt);
             Led[0].SetLo();
         }
 
@@ -98,6 +124,7 @@ void App_t::OnCmd(Shell_t *PShell) {
     Uart.Printf("\r%S\r", PCmd->Name);
     // Handle command
     if(PCmd->NameIs("Ping")) {
+        UsbAu.Put(0x1234);
         PShell->Ack(OK);
     }
 
