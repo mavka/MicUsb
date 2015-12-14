@@ -17,10 +17,8 @@ void onotify(io_queue_t *qp);
 
 class UsbAudio_t {
 private:
-    uint8_t IBuf[BUF_CNT];
-
+    int16_t Buf2Send[BUF_CNT];
 public:
-    void Init() { chOQObjectInit(&oqueue, IBuf, BUF_CNT, onotify, NULL); }
     bool IsListening = false;
     void Connect();
     void Disconnect();
@@ -28,13 +26,17 @@ public:
     // Data
     void SendBufI(uint8_t *Ptr, uint32_t Len);
 
-    output_queue_t oqueue;
-
     void Put(int16_t AValue) {
-        chOQWriteTimeout(&oqueue, (uint8_t*)&AValue, 2, TIME_INFINITE);
+        Buf.Put(AValue);
+        if(Buf.GetFullCount() == 32) {
+            chSysLock();
+            Buf.Get(Buf2Send, 32);
+            SendBufI((uint8_t*)Buf2Send, 64);
+            chSysUnlock();
+        }
     }
 
-//    CircBufNumber_t<int16_t, BUF_CNT> Buf;
+    CircBufNumber_t<int16_t, BUF_CNT> Buf;
 };
 
 extern UsbAudio_t UsbAu;

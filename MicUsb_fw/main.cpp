@@ -56,7 +56,6 @@ int main(void) {
     SamplingTmr.EnableIrqOnUpdate();
     SamplingTmr.Enable();
 
-    UsbAu.Init();
     // Connect USB
     UsbAu.Connect();
 
@@ -99,7 +98,7 @@ void App_t::ITask() {
             int32_t y0 = x0 - x1 + ((9999 * y1) / 10000);
             x1 = x0;
             y1 = y0;
-//            UsbAu.Buf.Put(y0);
+            UsbAu.Put(y0);
 //            if(Enabled) UsbAu.Put(y0);
 
 //            cnt++;
@@ -121,10 +120,9 @@ void App_t::ITask() {
 void App_t::OnCmd(Shell_t *PShell) {
 	Cmd_t *PCmd = &PShell->Cmd;
     __attribute__((unused)) int32_t dw32 = 0;  // May be unused in some configurations
-    Uart.Printf("\r%S\r", PCmd->Name);
+    Uart.Printf("%S\r", PCmd->Name);
     // Handle command
     if(PCmd->NameIs("Ping")) {
-        UsbAu.Put(0x1234);
         PShell->Ack(OK);
     }
 

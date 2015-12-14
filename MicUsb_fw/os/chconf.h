@@ -268,7 +268,7 @@
  *
  * @note    The default is @p TRUE.
  */
-#define CH_CFG_USE_QUEUES                   TRUE
+#define CH_CFG_USE_QUEUES                   FALSE
 
 /**
  * @brief   Core Memory Manager APIs.

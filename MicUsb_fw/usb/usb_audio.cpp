@@ -86,10 +86,9 @@ void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
 //        chSysUnlockFromISR();
 //    }
 //    else {
-//        // Copy data to Buf2Send
-//        uint32_t Cnt = 33;//UsbAu.Buf.GetFullCount();
+        // Copy data to Buf2Send
+//        uint32_t Cnt = UsbAu.Buf.GetFullCount();
 //        UsbAu.Buf.Get(Buf2Send, Cnt);
-//    //    if(r != OK) Uart.PrintfI("r = %u\r", r);
 //        // Send data
 //        usbPrepareTransmit(&USBDrv, EP_DATA_IN_ID, (uint8_t*)Buf2Send, Cnt*2); // 2 bytes per sample
 //        chSysLockFromISR();
@@ -97,31 +96,6 @@ void OnDataTransmitted(USBDriver *usbp, usbep_t ep) {
 //        chSysUnlockFromISR();
 ////        JustSent = true;
 //    }
-}
-
-void onotify(io_queue_t *qp) {
-    size_t n;
-
-    /* If the USB driver is not in the appropriate state then transactions  must not be started.*/
-    if (usbGetDriverStateI(&USBDrv) != USB_ACTIVE) {
-      return;
-    }
-
-    /* If there is not an ongoing transaction and the output queue contains
-       data then a new transaction is started.*/
-    if (!usbGetTransmitStatusI(&USBDrv, EP_DATA_IN_ID)) {
-      if ((n = oqGetFullI(&UsbAu.oqueue)) > 0U) {
-          Uart.PrintfI("n=%u\r", n);
-        osalSysUnlock();
-
-        usbPrepareQueuedTransmit(&USBDrv,
-                EP_DATA_IN_ID,
-                &UsbAu.oqueue, n);
-
-        osalSysLock();
-        (void) usbStartTransmitI(&USBDrv, EP_DATA_IN_ID);
-      }
-    }
 }
 #endif
 
@@ -169,9 +143,7 @@ void UsbAudio_t::SendBufI(uint8_t *Ptr, uint32_t Len) {
     if(!usbGetTransmitStatusI(&USBDrv, EP_DATA_IN_ID)) {
         if(Len > 0) {
             usbPrepareTransmit(&USBD1, EP_DATA_IN_ID, Ptr, Len);
-            chSysLockFromISR();
             usbStartTransmitI(&USBD1, EP_DATA_IN_ID);
-            chSysUnlockFromISR();
         }
     }
 }
