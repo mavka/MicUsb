@@ -15,7 +15,7 @@
 #include "clocking.h"
 
 // Lib version
-#define KL_LIB_VERSION      "20151210_1738"
+#define KL_LIB_VERSION      "20160124_1746"
 
 #if defined STM32L1XX
 #include "stm32l1xx.h"
@@ -426,6 +426,17 @@ static void PinClockEnable(GPIO_TypeDef *PGpioPort) {
 #endif // MCU type
 }
 
+// ==== Fast setup ====
+static inline void PinSetupModeOut(GPIO_TypeDef *PGpioPort, const uint16_t APinNumber) {
+    uint8_t Offset = APinNumber*2;
+    PGpioPort->MODER &= ~(0b11 << Offset);  // clear previous bits
+    PGpioPort->MODER |=   0b01 << Offset;   // Set new bits
+}
+static inline void PinSetupModeAnalog(GPIO_TypeDef *PGpioPort, const uint16_t APinNumber) {
+    PGpioPort->MODER |= 0b11 << (APinNumber*2);
+}
+
+// ==== Full-sized setup ====
 static inline void PinSetupOut(
         GPIO_TypeDef *PGpioPort,
         const uint16_t APinNumber,
@@ -511,8 +522,6 @@ static inline void PinSetupAnalog(GPIO_TypeDef *PGpioPort, const uint16_t APinNu
 #else
     // Setup mode
     PGpioPort->MODER |= 0b11 << (APinNumber*2);  // Set new bits
-    // Disable pull-up/down
-    PGpioPort->PUPDR &= ~(0b11 << (APinNumber*2)); // clear previous bits
 #endif
 }
 

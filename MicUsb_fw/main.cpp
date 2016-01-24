@@ -8,19 +8,19 @@
 #include "main.h"
 #include "usb_audio.h"
 #include "adc_ads8320.h"
+#include "SimpleSensors.h"
 
 App_t App;
 Timer_t SamplingTmr = {SAMPLING_TMR};
 
 const PinOutput_t LedUSB = {LEDUSB_GPIO, LEDUSB_PIN, omPushPull};
 const PinOutput_t Led[3] = {
+        {LED0_GPIO, LED0_PIN, omPushPull},
         {LED1_GPIO, LED1_PIN, omPushPull},
-        {LED3_GPIO, LED3_PIN, omPushPull},
-        {LED4_GPIO, LED4_PIN, omPushPull},
+        {LED2_GPIO, LED2_PIN, omPushPull},
 };
 
 int main(void) {
-
     // ==== Setup clock frequency ====
     uint8_t ClkResult = 1;
     SetupVCore(vcore1V8);
@@ -42,10 +42,17 @@ int main(void) {
     if(ClkResult != 0) Uart.Printf("XTAL failure\r");
 
     App.InitThread();
+    PinSensors.Init();
 
     // Leds
     LedUSB.Init();
     for(uint8_t i=0; i<3; i++) Led[i].Init();
+    Led[0].SetHi();
+
+    // Setup gain level
+    App.AmpLvl = alvlLow;
+    PinSetupOut(GAIN_CTRL_GPIO, GAIN_CTRL_PIN, omPushPull);
+    PinSet(GAIN_CTRL_GPIO, GAIN_CTRL_PIN);  // VDD => 40dB
 
     Adc.Init();
 
@@ -93,13 +100,41 @@ void App_t::ITask() {
             x1 = x0;
             y1 = y0;
             UsbAu.Put(y0);
-            Led[0].SetLo();
+//            Led[0].SetLo();
         }
     } // while true
 }
 
 void OnSOF(USBDriver *usbp) {
-    SAMPLING_TMR->CNT = SAMPLING_TMR->ARR - 4;
+//    SAMPLING_TMR->CNT = SAMPLING_TMR->ARR - 4;
+//    SAMPLING_TMR->EGR = TIM_EGR_UG;
+}
+
+void ProcessBtnPress(PinSnsState_t *PState, uint32_t Len) {
+    if(*PState == pssFalling) {
+        switch(App.AmpLvl) {
+            case alvlLow:
+                App.AmpLvl = alvlMid;
+                Led[1].SetHi();
+                PinSetupModeOut(GAIN_CTRL_GPIO, GAIN_CTRL_PIN);
+                PinClear(GAIN_CTRL_GPIO, GAIN_CTRL_PIN);    // GND => 50dB
+                break;
+            case alvlMid:
+                App.AmpLvl = alvlHi;
+                Led[2].SetHi();
+                PinSetupModeAnalog(GAIN_CTRL_GPIO, GAIN_CTRL_PIN);  // HiZ => 60dB
+                break;
+            case alvlHi:
+                App.AmpLvl = alvlLow;
+                Led[1].SetLo();
+                Led[2].SetLo();
+                PinSetupModeOut(GAIN_CTRL_GPIO, GAIN_CTRL_PIN);
+                PinSet(GAIN_CTRL_GPIO, GAIN_CTRL_PIN);    // Vdd => 40dB
+                break;
+        } // case
+
+//        Led[0].Toggle();
+    }
 }
 
 #if 1 // ======================= Command processing ============================
@@ -127,7 +162,7 @@ void SAMPLING_TMR_IRQHandler(void) {
     if(SAMPLING_TMR->SR & TIM_SR_UIF) {
         SAMPLING_TMR->SR &= ~TIM_SR_UIF;
         Adc.StartDMAMeasure();
-        Led[0].SetHi();
+//        Led[0].SetHi();
     }
     chSysUnlockFromISR();
     CH_IRQ_EPILOGUE();

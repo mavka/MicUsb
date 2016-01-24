@@ -2546,4 +2546,10 @@ F 3 "" H 13350 7500 60  0000 C CNN
 	1    13350 7500
 	0    1    1    0   
 $EndComp
+Text Notes 7350 7650 0    60   ~ 0
+Led[0]
+Text Notes 7350 6750 0    60   ~ 0
+Led[1]
+Text Notes 7350 7350 0    60   ~ 0
+Led[2]
 $EndSCHEMATC

@@ -33,12 +33,12 @@
 #define LEDUSB_GPIO     GPIOB
 #define LEDUSB_PIN      1
 
+#define LED0_GPIO       GPIOB
+#define LED0_PIN        5
 #define LED1_GPIO       GPIOB
 #define LED1_PIN        0
-#define LED3_GPIO       GPIOB
-#define LED3_PIN        4
-#define LED4_GPIO       GPIOB
-#define LED4_PIN        5
+#define LED2_GPIO       GPIOB
+#define LED2_PIN        4
 
 // USB
 #define USB_GPIO		GPIOA

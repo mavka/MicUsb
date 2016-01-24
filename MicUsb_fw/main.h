@@ -17,10 +17,13 @@
 #define APP_NAME            "MicUSB"
 #define APP_VERSION         __DATE__ " " __TIME__
 
+enum AmpLvl_t {alvlLow = 0, alvlMid = 1, alvlHi = 2};
+
 class App_t {
 private:
     thread_t *PThread;
 public:
+    AmpLvl_t AmpLvl;
     // Eternal methods
     void InitThread() { PThread = chThdGetSelfX(); }
     void SignalEvt(eventmask_t Evt) {
