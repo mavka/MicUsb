@@ -500,7 +500,7 @@ extern void PrintfCNow(const char *format, ...);
 
 #define CH_CFG_SYSTEM_HALT_HOOK(reason) {                                   \
   /* System halt code here.*/                                               \
-        PrintfCNow("\rHalt: %S", reason);                                 \
+        PrintfCNow("\rHalt: %S @ %S", reason, __FUNCTION__);                                 \
 }
 
 /** @} */
