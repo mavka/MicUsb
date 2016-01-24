@@ -12,6 +12,15 @@
 
 App_t App;
 Timer_t SamplingTmr = {SAMPLING_TMR};
+bool SmplTmrEnabled = false;
+
+void StartMeasurementTimer() {  // Called from usb audio on data request
+    SamplingTmr.Enable();
+}
+void StopSamplingTmr() {
+    SamplingTmr.Disable();
+    SmplTmrEnabled = false;
+}
 
 const PinOutput_t LedUSB = {LEDUSB_GPIO, LEDUSB_PIN, omPushPull};
 const PinOutput_t Led[3] = {
@@ -58,7 +67,7 @@ int main(void) {
 
     // ==== Sampling timer ====
     SamplingTmr.Init();
-    SamplingTmr.SetUpdateFrequency(16000); // Start Fsmpl value
+    SamplingTmr.SetUpdateFrequency(16000); // Fsampling
     SamplingTmr.EnableIrq(SAMPLING_TMR_IRQ, IRQ_PRIO_MEDIUM);
     SamplingTmr.EnableIrqOnUpdate();
     SamplingTmr.Enable();
@@ -83,13 +92,12 @@ void App_t::ITask() {
             Uart.Printf("UsbReady\r");
             LedUSB.SetHi();
         }
-        if(EvtMsk & EVTMSK_START_LISTEN) {
-            Uart.Printf("START_LISTEN\r");
-        }
-        if(EvtMsk & EVTMSK_STOP_LISTEN) {
-            Uart.Printf("STOP_LISTEN\r");
-
-        }
+//        if(EvtMsk & EVTMSK_START_LISTEN) {
+//            Uart.Printf("START_LISTEN\r");
+//        }
+//        if(EvtMsk & EVTMSK_STOP_LISTEN) {
+//            Uart.Printf("STOP_LISTEN\r");
+//        }
 #endif
 
         if(EvtMsk & EVTMSK_ADC_DONE) {
@@ -106,8 +114,12 @@ void App_t::ITask() {
 }
 
 void OnSOF(USBDriver *usbp) {
-//    SAMPLING_TMR->CNT = SAMPLING_TMR->ARR - 4;
+    SAMPLING_TMR->CNT = SAMPLING_TMR->ARR - 54;
 //    SAMPLING_TMR->EGR = TIM_EGR_UG;
+//    if(!SmplTmrEnabled) {
+//        SamplingTmr.Enable();
+//        SmplTmrEnabled = true;
+//    }
 }
 
 void ProcessBtnPress(PinSnsState_t *PState, uint32_t Len) {

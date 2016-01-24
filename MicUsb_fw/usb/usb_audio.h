@@ -15,6 +15,8 @@
 
 void onotify(io_queue_t *qp);
 
+extern void StopSamplingTmr();
+
 class UsbAudio_t {
 private:
     int16_t Buf2Send[BUF_CNT];
@@ -28,14 +30,13 @@ public:
 
     void Put(int16_t AValue) {
         Buf.Put(AValue);
-        chSysLock();
-        CheckAndSendI();
-        chSysUnlock();
-    }
-    void CheckAndSendI() {
         if(Buf.GetFullCount() >= 32) {
+//            StopSamplingTmr();
+            chSysLock();
             Buf.Get(Buf2Send, 32);
+            Buf.Flush();
             SendBufI((uint8_t*)Buf2Send, 64);
+            chSysUnlock();
         }
     }
 
